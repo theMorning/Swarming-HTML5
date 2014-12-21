@@ -9,7 +9,7 @@ var HEIGHT = canvas.height;
 var deg = 0;
 
 var DEBUG = false;
-var BOID_COUNT = 50;
+var BOID_COUNT = 5;
 /*** END GLOBALS ***/
 
 /*** Mouse class definition ***/
@@ -50,12 +50,25 @@ function Boid() {
 }
 
 Boid.prototype.draw = function() {
+    deg = Math.atan2(this.dy , this.dx);
+
+    var view = [];
+    view.push(Math.cos(deg-Math.PI/4));
+    view.push(Math.sin(deg-Math.PI/4));
+    view.push(Math.cos(deg+Math.PI/4));
+    view.push(Math.sin(deg+Math.PI/4));
+    
+    line(this.x,this.y,this.x+100*this.dx,this.y+100*this.dy, 'red');
+    // left
+    line(this.x,this.y,this.x+100*view[0],this.y+100*view[1], 'red');
+    // right
+    line(this.x,this.y,this.x+100*view[2],this.y+100*view[3], 'red');
+    
     circleFilled(this.x, this.y, this.radius, this.color);
     
     context.save();
     context.translate(this.x,this.y);
     
-    deg = Math.atan2(this.dy , this.dx);
     context.rotate(deg);
     
     rectFilled(-5,-5,25,10,this.color);
@@ -415,7 +428,7 @@ function printStats() {
 /* Move the animation objects */
 function move() {
     swarm.move();
-    swarm2.move();
+    //swarm2.move();
 }
 
 /* Draw objects */
@@ -424,7 +437,7 @@ function draw() {
     mouse.draw();
     
     swarm.draw();
-    swarm2.draw();
+    //swarm2.draw();
     
     //printStats();
 }
